@@ -74,3 +74,23 @@ async function loadPatients() {
         patientTableBody.innerHTML = `<tr><td colspan="5">Error loading patients: ${error.message}</td></tr>`;
     }
 }
+
+const sqlQueryInput = document.getElementById('sqlQueryInput');
+const executeSqlButton = document.getElementById('executeSql');
+const queryResultDiv = document.getElementById('queryResult');
+
+executeSqlButton.addEventListener('click', async () => {
+    const query = sqlQueryInput.value.trim();
+    if (!query) {
+        queryResultDiv.textContent = 'Please enter a SQL query.';
+        return;
+    }
+
+    try {
+        const result = await pgl.query(query); // No need to notify for read-only queries
+        queryResultDiv.textContent = JSON.stringify(result.rows, null, 2);
+    } catch (error) {
+        queryResultDiv.textContent = 'Error executing query: ' + error.message;
+        console.error('SQL Query Error:', error);
+    }
+});
