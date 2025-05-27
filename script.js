@@ -30,3 +30,27 @@ async function executeQueryAndNotify(query, params = []) {
         throw error;
     }
 }
+
+
+const patientRegistrationForm = document.getElementById('patientRegistrationForm');
+
+patientRegistrationForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const dob = document.getElementById('dob').value;
+    const gender = document.getElementById('gender').value;
+    const address = document.getElementById('address').value;
+
+    try {
+        await executeQueryAndNotify(
+            'INSERT INTO patients (name, dob, gender, address) VALUES ($1, $2, $3, $4);',
+            [name, dob, gender, address]
+        );
+        alert('Patient registered successfully!');
+        patientRegistrationForm.reset();
+        await loadPatients(); // Refresh the list
+    } catch (error) {
+        alert('Error registering patient: ' + error.message);
+    }
+});
