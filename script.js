@@ -94,3 +94,11 @@ executeSqlButton.addEventListener('click', async () => {
         console.error('SQL Query Error:', error);
     }
 });
+
+
+channel.addEventListener('message', async (event) => {
+    if (event.data === 'data_updated') {
+        console.log('Received data_updated message, reloading patients...');
+        await loadPatients(); // Reload patients when another tab updates data
+    }
+});
