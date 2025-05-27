@@ -102,3 +102,8 @@ channel.addEventListener('message', async (event) => {
         await loadPatients(); // Reload patients when another tab updates data
     }
 });
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await initializePglite();
+    await loadPatients();
+});
