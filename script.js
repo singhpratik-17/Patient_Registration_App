@@ -54,3 +54,23 @@ patientRegistrationForm.addEventListener('submit', async (event) => {
         alert('Error registering patient: ' + error.message);
     }
 });
+
+const patientTableBody = document.querySelector('#patientTable tbody');
+
+async function loadPatients() {
+    try {
+        const result = await pgl.query('SELECT * FROM patients ORDER BY id DESC;');
+        patientTableBody.innerHTML = ''; // Clear existing rows
+        result.rows.forEach(patient => {
+            const row = patientTableBody.insertRow();
+            row.insertCell().textContent = patient.id;
+            row.insertCell().textContent = patient.name;
+            row.insertCell().textContent = patient.dob;
+            row.insertCell().textContent = patient.gender;
+            row.insertCell().textContent = patient.address;
+        });
+    } catch (error) {
+        console.error('Error loading patients:', error);
+        patientTableBody.innerHTML = `<tr><td colspan="5">Error loading patients: ${error.message}</td></tr>`;
+    }
+}
